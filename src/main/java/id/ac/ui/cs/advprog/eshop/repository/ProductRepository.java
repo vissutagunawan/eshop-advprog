@@ -38,4 +38,14 @@ public class ProductRepository{
 
         return false;
     }
+
+    public boolean delete(String productId){
+        Product targetProduct = findById(productId);
+        if (targetProduct != null){
+            productData.remove(targetProduct);
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -37,7 +37,12 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public boolean edit(Product editedProduct){
-        productRepository.edit(editedProduct);
-        return false;
+        return productRepository.edit(editedProduct);
     }
+
+    @Override
+    public boolean delete(String productId){
+        return productRepository.delete(productId);
+    }
+
 }
