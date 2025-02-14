@@ -28,15 +28,15 @@ public class ProductRepository{
                 .orElse(null);
     }
 
-    public boolean edit(Product editedProduct){
+    public Product edit(Product editedProduct){
         for (int i=0; i<productData.size(); i++){
             if (productData.get(i).getProductId().equals(editedProduct.getProductId())){
                 productData.set(i, editedProduct);
-                return true;
+                return productData.get(i);
             }
         }
 
-        return false;
+        return findById(editedProduct.getProductId());
     }
 
     public boolean delete(String productId){

@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public boolean edit(Product editedProduct){
+    public Product edit(Product editedProduct){
         return productRepository.edit(editedProduct);
     }
 
