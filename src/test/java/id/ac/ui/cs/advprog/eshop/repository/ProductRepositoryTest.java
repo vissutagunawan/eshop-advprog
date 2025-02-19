@@ -22,7 +22,7 @@ class ProductRepositoryTest {
 
     @BeforeEach
     void setUp() {
-
+        // This test sets up the product repository for test
     }
 
     @Test
