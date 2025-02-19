@@ -101,6 +101,22 @@ class ProductRepositoryTest {
     }
 
     @Test
+    void testEditProductNotFoundDuringIter(){
+        Product product = new Product();
+        product.setProductId("id1");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product editedProduct = new Product();
+        editedProduct.setProductId("id1");
+        productRepository.delete("id1");
+
+        Product result = productRepository.edit(editedProduct);
+        assertNull(result);
+    }
+
+    @Test
     void testEditNonExistentProduct() {
         Product nonExistentProduct = new Product();
         nonExistentProduct.setProductId("non-existent-id");
