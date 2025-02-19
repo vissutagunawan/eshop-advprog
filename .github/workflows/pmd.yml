@@ -5,6 +5,10 @@ on:
     branches:
       - '*'
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   pmd-code-scan:
     name: PMD Code Scan
