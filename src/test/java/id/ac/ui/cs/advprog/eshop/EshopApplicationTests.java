@@ -8,6 +8,8 @@ class EshopApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// This test verifies that the Spring application context loads correctly
+		// The method is intentionally empty as the @SpringBootTest annotation handles the context loading verification
 	}
 
 	@Test
