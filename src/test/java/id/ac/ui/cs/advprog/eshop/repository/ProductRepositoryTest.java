@@ -101,19 +101,31 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void testEditProductNotFoundDuringIter(){
+    void testEditProductNotFoundInLoop() {
+        // Create initial product
         Product product = new Product();
         product.setProductId("id1");
-        product.setProductName("Sampo Cap Bambang");
+        product.setProductName("Product 1");
         product.setProductQuantity(100);
         productRepository.create(product);
 
-        Product editedProduct = new Product();
-        editedProduct.setProductId("id1");
-        productRepository.delete("id1");
+        // Create a product with different ID
+        Product editProduct = new Product();
+        editProduct.setProductId("id2");
+        editProduct.setProductName("Product 2");
+        editProduct.setProductQuantity(200);
 
-        Product result = productRepository.edit(editedProduct);
+        // Try to edit - should fail because ID doesn't match
+        Product result = productRepository.edit(editProduct);
         assertNull(result);
+
+        // Verify original product is unchanged
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertTrue(productIterator.hasNext());
+        Product savedProduct = productIterator.next();
+        assertEquals(product.getProductId(), savedProduct.getProductId());
+        assertEquals(product.getProductName(), savedProduct.getProductName());
+        assertEquals(product.getProductQuantity(), savedProduct.getProductQuantity());
     }
 
     @Test

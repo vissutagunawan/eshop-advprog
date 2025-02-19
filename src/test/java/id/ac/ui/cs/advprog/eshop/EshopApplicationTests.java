@@ -10,4 +10,10 @@ class EshopApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void testMain() {
+		// Verifies main method runs without errors
+		EshopApplication.main(new String[] {});
+	}
+
 }
