@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.List;
 
 @Repository
-public class CarRepository {
+public class CarRepository implements InterfaceRepository<Car>{
     static int id = 0;
     private List<Car> carData = new ArrayList<>();
     public Car create(Car car){
@@ -31,10 +31,10 @@ public class CarRepository {
         return null;
     }
 
-    public Car update(String id, Car updatedCar){
+    public Car edit(Car updatedCar){
         for (int i=0; i<carData.size(); i++){
             Car car = carData.get(i);
-            if (car.getCarId().equals(id)){
+            if (car.getCarId().equals(updatedCar.getCarId())){
                 car.setCarName(updatedCar.getCarName());
                 car.setCarColor(updatedCar.getCarColor());
                 car.setCarQuantity(updatedCar.getCarQuantity());
@@ -44,7 +44,11 @@ public class CarRepository {
         return null;
     }
 
-    public void delete(String id){
+    public boolean delete(String id) {
+        if (findById(id) == null){
+            return false;
+        }
         carData.removeIf(car -> car.getCarId().equals(id));
+        return true;
     }
 }
