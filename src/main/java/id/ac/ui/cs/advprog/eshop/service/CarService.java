@@ -6,6 +6,6 @@ public interface CarService {
     public Car create(Car car);
     public List<Car> findAll();
     Car findById(String carId);
-    public void update(String carId, Car car);
-    public void deleteCarById(String carId);
+    public Car edit(Car car);
+    public boolean deleteCarById(String carId);
 }
