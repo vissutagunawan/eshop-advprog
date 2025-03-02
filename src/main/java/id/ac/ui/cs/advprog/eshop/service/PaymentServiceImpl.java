@@ -77,26 +77,18 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private boolean isValidVoucherCode(String voucherCode) {
-        // Voucher code must be 16 characters long
-        if (voucherCode == null || voucherCode.length() != 16) {
-            return false;
-        }
+        return voucherCode != null && voucherCode.length() == 16 &&
+                voucherCode.startsWith("ESHOP") && countDigits(voucherCode) == 8;
+    }
 
-        // Voucher code must start with "ESHOP"
-        if (!voucherCode.startsWith("ESHOP")) {
-            return false;
-        }
-
-        // Count numerical characters
-        int numCount = 0;
-        for (char c : voucherCode.toCharArray()) {
-            if (Character.isDigit(c)) {
-                numCount++;
+    private int countDigits(String voucherCode) {
+        int cnt = 0;
+        for (int i = 0; i < voucherCode.length(); i++) {
+            if (Character.isDigit(voucherCode.charAt(i))) {
+               cnt++;
             }
         }
-
-        // Voucher code must contain 8 numerical characters
-        return numCount == 8;
+        return cnt;
     }
 
     private void processCashOnDeliveryPayment(Payment payment) {
