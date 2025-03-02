@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import enums.PaymentMethod;
 import lombok.Getter;
 import java.util.Map;
 import enums.PaymentStatus;
@@ -16,7 +17,7 @@ public class Payment {
         if (order == null) {
             throw new IllegalArgumentException("Order cannot be null");
         }
-        if (method == null || method.trim().isEmpty()) {
+        if (method == null || method.trim().isEmpty() || !PaymentMethod.contains(method)) {
             throw new IllegalArgumentException("Method cannot be null or empty");
         }
         if (paymentData == null) {
