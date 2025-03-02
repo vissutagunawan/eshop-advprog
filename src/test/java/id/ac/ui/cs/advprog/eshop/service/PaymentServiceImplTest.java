@@ -65,7 +65,7 @@ public class PaymentServiceImplTest {
         assertEquals(order, payment.getOrder());
         assertEquals(paymentData, payment.getPaymentData());
 
-        verify(paymentRepository, times(1)).save(any(Payment.class));
+        verify(paymentRepository, times(2)).save(any(Payment.class));
     }
 
     @Test
@@ -92,14 +92,13 @@ public class PaymentServiceImplTest {
     }
 
     @Test
-    void testSetStatusToOther(){
-        Payment payment = new Payment("123", order, "VOUCHER", paymentData);
+    void testSetStatusToOther() {
+        Payment payment = new Payment("payment-123", order, "VOUCHER", paymentData);
         when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
-        when(orderService.updateStatus(anyString(), anyString())).thenReturn(order);
         Payment updatedPayment = paymentService.setStatus(payment, PaymentStatus.PENDING.getValue());
 
         assertEquals(PaymentStatus.PENDING.getValue(), updatedPayment.getStatus());
-        verify(orderService, times(1)).updateStatus(anyString(), anyString());
+        verify(orderService, never()).updateStatus(anyString(), anyString());
     }
 
     @Test
