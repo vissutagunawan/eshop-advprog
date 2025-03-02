@@ -60,7 +60,7 @@ public class OrderServiceImplTest {
         doReturn(order).when(orderRepository).findById(order.getId());
 
         assertNull(orderService.createOrder(order));
-        verify(orderRepository, times(1)).save(order);
+        verify(orderRepository, times(0)).save(order);
     }
 
     @Test
