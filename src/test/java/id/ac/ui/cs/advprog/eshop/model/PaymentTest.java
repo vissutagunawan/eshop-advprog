@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import enums.PaymentMethod;
+import enums.PaymentStatus;
 import org.apache.hc.core5.http.impl.routing.PathRoute;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,12 +35,12 @@ public class PaymentTest {
 
     @Test
     void testCreatePayment(){
-        Payment payment = new Payment("payment-123", order, "VOUCHER", paymentData);
+        Payment payment = new Payment("payment-123", order, PaymentMethod.VOUCHER.getValue(), paymentData);
         assertEquals("payment-123", payment.getId());
         assertEquals(order, payment.getOrder());
-        assertEquals("VOUCHER", payment.getMethod());
+        assertEquals(PaymentMethod.VOUCHER.getValue(), payment.getMethod());
         assertEquals(paymentData, payment.getPaymentData());
-        assertEquals("PENDING", payment.getStatus());
+        assertEquals(PaymentStatus.PENDING.getValue(), payment.getStatus());
     }
 
     @Test
@@ -63,21 +65,21 @@ public class PaymentTest {
     @Test
     void testCreatePaymentWithNullPaymentData() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new Payment("payment-123", order, "VOUCHER", null);
+            new Payment("payment-123", order, PaymentMethod.VOUCHER.getValue(), null);
         });
     }
 
     @Test
     void testSetStatus() {
-        Payment payment = new Payment("payment-123", order, "VOUCHER", paymentData);
-        payment.setStatus("SUCCESS");
+        Payment payment = new Payment("payment-123", order, PaymentMethod.VOUCHER.getValue(), paymentData);
+        payment.setStatus(PaymentStatus.SUCCESS.getValue());
 
-        assertEquals("SUCCESS", payment.getStatus());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
     }
 
     @Test
     void testSetStatusWithInvalidStatus() {
-        Payment payment = new Payment("payment-123", order, "VOUCHER", paymentData);
+        Payment payment = new Payment("payment-123", order, PaymentMethod.VOUCHER.getValue(), paymentData);
 
         assertThrows(IllegalArgumentException.class, () -> {
             payment.setStatus("INVALID_STATUS");
