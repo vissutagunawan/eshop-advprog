@@ -131,4 +131,13 @@ public class PaymentControllerTest {
                         .param("status", "SUCCESS"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void testPaymentDetailById() throws Exception {
+        // Test the POST endpoint that redirects to the detail page
+        mockMvc.perform(post("/payment/detail")
+                        .param("paymentId", "payment-123"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/payment/detail/payment-123"));
+    }
 }

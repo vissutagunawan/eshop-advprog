@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
 import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
@@ -13,10 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,7 +49,7 @@ public class PaymentServiceImplTest {
     }
 
     @Test
-    void testAddPayment(){
+    void testAddVoucherPayment(){
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
 
         when(paymentRepository.save(any(Payment.class))).thenAnswer(invocation -> {
@@ -64,6 +62,45 @@ public class PaymentServiceImplTest {
         assertEquals("VOUCHER", payment.getMethod());
         assertEquals(order, payment.getOrder());
         assertEquals(paymentData, payment.getPaymentData());
+
+        verify(paymentRepository, times(2)).save(any(Payment.class));
+    }
+
+    @Test
+    void testAddCashOnDeliveryPayment() {
+        paymentData.put("address", "Jl. Margonda Raya No. 100");
+        paymentData.put("deliveryFee", "15000");
+
+        when(paymentRepository.save(any(Payment.class))).thenAnswer(invocation -> {
+            Payment payment = invocation.getArgument(0);
+            return payment;
+        });
+
+        Payment payment = paymentService.addPayment(order, PaymentMethod.CASH_ON_DELIVERY.getValue(), paymentData);
+        assertNotNull(payment);
+        assertEquals(PaymentMethod.CASH_ON_DELIVERY.getValue(), payment.getMethod());
+        assertEquals(order, payment.getOrder());
+        assertEquals(paymentData, payment.getPaymentData());
+
+        verify(paymentRepository, times(2)).save(any(Payment.class));
+    }
+
+    @Test
+    void testAddBankTransferPayment() {
+        paymentData.put("bankName", "Bank Central Java");
+        paymentData.put("referenceCode", "REF123456");
+
+        when(paymentRepository.save(any(Payment.class))).thenAnswer(invocation -> {
+            Payment payment = invocation.getArgument(0);
+            return payment;
+        });
+
+        Payment payment = paymentService.addPayment(order, PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
+        assertNotNull(payment);
+        assertEquals(PaymentMethod.BANK_TRANSFER.getValue(), payment.getMethod());
+        assertEquals(order, payment.getOrder());
+        assertEquals(paymentData, payment.getPaymentData());
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
 
         verify(paymentRepository, times(2)).save(any(Payment.class));
     }
@@ -126,5 +163,34 @@ public class PaymentServiceImplTest {
         assertEquals(2, allPayments.size());
         assertTrue(allPayments.contains(payment));
         assertTrue(allPayments.contains(payment2));
+    }
+
+    @Test
+    void testAddBankTransferWithDirectMethodCall() {
+        // Set up valid bank transfer payment data
+        Map<String, String> paymentData = new HashMap<>();
+        paymentData.put("bankName", "Bank Central Java");
+        paymentData.put("referenceCode", "REF123456");
+
+        String paymentId = UUID.randomUUID().toString();
+        Payment payment = new Payment(paymentId, order, PaymentMethod.BANK_TRANSFER.getValue(), paymentData);
+
+        // Mock repository save
+        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
+        when(orderService.updateStatus(anyString(), anyString())).thenReturn(order);
+
+        // Directly test the processPaymentByMethod method through reflection
+        try {
+            java.lang.reflect.Method processMethod = PaymentServiceImpl.class.getDeclaredMethod(
+                    "processPaymentByMethod", Payment.class);
+            processMethod.setAccessible(true);
+            processMethod.invoke(paymentService, payment);
+        } catch (Exception e) {
+            fail("Exception occurred: " + e.getMessage());
+        }
+
+        // Verify the bank transfer was processed correctly
+        assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
+        verify(orderService, times(1)).updateStatus(order.getId(), OrderStatus.SUCCESS.getValue());
     }
 }

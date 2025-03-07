@@ -57,10 +57,10 @@ public class PaymentServiceImpl implements PaymentService {
 
         if (PaymentMethod.VOUCHER.getValue().equals(method)){
             processVoucherPayment(payment);
-        } else if (PaymentMethod.CASH_ON_DELIVERY.getValue().equals(method)){
-            processCashOnDeliveryPayment(payment);
         } else if (PaymentMethod.BANK_TRANSFER.getValue().equals(method)){
             processBankTransferPayment(payment);
+        } else if (PaymentMethod.CASH_ON_DELIVERY.getValue().equals(method)){
+            processCashOnDeliveryPayment(payment);
         }
     }
 

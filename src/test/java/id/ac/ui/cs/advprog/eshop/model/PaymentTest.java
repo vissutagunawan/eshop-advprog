@@ -85,4 +85,42 @@ public class PaymentTest {
         });
     }
 
+    @Test
+    void testCreatePaymentWithInvalidMethod() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("payment-123", order, "INVALID_METHOD", paymentData);
+        });
+    }
+
+    @Test
+    void testCreatePaymentWithWhitespaceMethod() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("payment-123", order, "   ", paymentData);
+        });
+    }
+
+    // Add this test to ensure all components of the compound condition are tested
+    @Test
+    void testMethodNullOrEmptyOrInvalid() {
+        // Test null method (already covered in original test)
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("payment-123", order, null, paymentData);
+        });
+
+        // Test empty method (already covered in original test)
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("payment-123", order, "", paymentData);
+        });
+
+        // Test method with only spaces
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("payment-123", order, "    ", paymentData);
+        });
+
+        // Test invalid method (not in PaymentMethod enum)
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Payment("payment-123", order, "INVALID_PAYMENT_METHOD", paymentData);
+        });
+    }
+
 }
