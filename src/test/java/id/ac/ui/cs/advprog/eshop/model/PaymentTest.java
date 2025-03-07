@@ -1,8 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
-import enums.PaymentMethod;
-import enums.PaymentStatus;
-import org.apache.hc.core5.http.impl.routing.PathRoute;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 

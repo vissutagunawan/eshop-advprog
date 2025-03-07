@@ -1,7 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
-import enums.OrderStatus;
-import enums.PaymentStatus;
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Product;

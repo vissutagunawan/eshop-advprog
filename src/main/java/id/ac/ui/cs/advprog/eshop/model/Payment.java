@@ -1,9 +1,9 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
-import enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import lombok.Getter;
 import java.util.Map;
-import enums.PaymentStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 
 @Getter
 public class Payment {
